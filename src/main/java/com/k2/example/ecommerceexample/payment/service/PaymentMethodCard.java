@@ -11,6 +11,6 @@ public class PaymentMethodCard implements PaymentMethod {
     @Override
     public String pay(String pay) {
         System.out.println("payment by Card " + pay);
-        return "payment by Card ";
+        return "payment by Card";
     }
 }
