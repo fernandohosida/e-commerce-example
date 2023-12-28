@@ -22,26 +22,21 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> postProduct(@RequestBody ProductDto post) {
-        try {
-            Product product = Product.builder()
-                .name(post.name())
-                .category(productService.findCategory(post.category()))
-                .price(post.value())
-                .build();
+        Product product = Product.builder()
+            .name(post.name())
+            .category(productService.findCategory(post.category()))
+            .price(post.value())
+            .build();
 
-            Product response = productService.save(product);
+        Product response = productService.save(product);
 
-            ProductDto productDto = new ProductDto(response.getId().toString(),
-                response.getName(),
-                response.getCategory().getName(),
-                response.getPrice(),
-                response.getCreated_at());
+        ProductDto productDto = new ProductDto(response.getId().toString(),
+            response.getName(),
+            response.getCategory().getName(),
+            response.getPrice(),
+            response.getCreated_at());
 
-            return ResponseEntity.ok(productDto);
-        } catch (Exception e) {
-            return (ResponseEntity<ProductDto>) ResponseEntity.internalServerError();
-        }
-
+        return ResponseEntity.ok(productDto);
     }
 
     @GetMapping

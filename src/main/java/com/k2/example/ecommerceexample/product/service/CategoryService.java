@@ -1,6 +1,7 @@
 package com.k2.example.ecommerceexample.product.service;
 
 import com.k2.example.ecommerceexample.product.dto.CategoryDto;
+import com.k2.example.ecommerceexample.product.exceptions.CategoryNotFoundException;
 import com.k2.example.ecommerceexample.product.model.Category;
 import com.k2.example.ecommerceexample.product.model.CategoryPrincipalEnum;
 import com.k2.example.ecommerceexample.product.repository.CategoryRepository;
@@ -27,7 +28,7 @@ public class CategoryService {
         if (cat.isPresent()) {
             return cat.get();
         } else {
-            throw new RuntimeException("category not found");
+            throw new CategoryNotFoundException("category not found");
         }
 
     }
@@ -43,7 +44,7 @@ public class CategoryService {
 
         validate.validate(categoryDto);
 
-        Category cat = Category.builder().id(UUID.randomUUID().toString()).name(categoryDto.name()).created_at(LocalDateTime.now()).principal(enumValue).build();
+        Category cat = Category.builder().name(categoryDto.name()).created_at(LocalDateTime.now()).principal(enumValue).build();
         cat = categoryRepository.save(cat);
         return new CategoryDto(cat.getId(), cat.getName(), null, enumValue.name(), cat.getCreated_at());
 

@@ -1,5 +1,6 @@
 package com.k2.example.ecommerceexample.product.service;
 
+import com.k2.example.ecommerceexample.product.exceptions.ProductDuplicateException;
 import com.k2.example.ecommerceexample.product.model.Category;
 import com.k2.example.ecommerceexample.product.model.Product;
 import com.k2.example.ecommerceexample.product.repository.ProductRepository;
@@ -23,8 +24,17 @@ public class ProductService {
     }
 
     public Product save(Product product) {
+
+        verifySameProduct(product);
+
         product.setCreated_at(LocalDateTime.now());
         return productRepository.save(product);
+    }
+
+    private void verifySameProduct(Product product) {
+         if (productRepository.findByName(product.getName()).isPresent()) {
+             throw new ProductDuplicateException("Product already exists");
+         }
     }
 
     public List<Product> findAll() {
